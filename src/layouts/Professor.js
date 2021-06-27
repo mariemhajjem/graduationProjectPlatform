@@ -8,11 +8,11 @@ import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js"; 
 import Sidebar from "components/Sidebar/Sidebar.js";  
-import routes from "./routes";
+import routes from "./routesProf";
 
 var ps;
 
-function Admin(props) {
+function Professor(props) {
   const location = useLocation();
   const [backgroundColor, setBackgroundColor] = React.useState("blue");
   const mainPanel = React.useRef();
@@ -52,13 +52,13 @@ function Admin(props) {
               />
             );
           })}
-          <Redirect from="/" to="/" />
-          <Redirect from="/admin" to="/admin/dashboard" />
           
+          <Redirect from="/professor" to="/professor/dashboard" />
+          <Redirect from="/" to="/" />
         </Switch>
       </div> 
     </div>
   );
 }
 
-export default Admin;
+export default Professor;

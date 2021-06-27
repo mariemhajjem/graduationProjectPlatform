@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useHistory } from "react-router-dom"
+import {Connect} from '../../services/LoginService'
+import axios from "axios";
+import jwt from 'jwt-decode'
 
 function Copyright() {
   return (
@@ -46,9 +50,61 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Login() {
+  let history = useHistory()
+  const [error, setError] = useState("")
+  const [student, setStudent] = useState({
+    nom: "",
+    prenom: "",
+    email: "",
+    password: "",
+  });
+  
+  //  Object Destructuring
+  const { nom, prenom, email, password } = student;
+  const onInputChange = (e) => {
+    setStudent({ ...student, [e.target.name]: e.target.value });
+  };
+  
+  
+  // Insert Student Records
+  const submitStudentRecord = async (e) => {
+     e.preventDefault();
+    const res = await axios.post("http://localhost:5000/login/login", student); 
+    console.log(res)
+            if (res.data.status !== 200) {
+                setError("Erreur")
+            }
+            if (res.data.auth === false ) { 
+                setError("Email ou mot de passe incorrect")
+            }
+            const decoded = jwt(res.data.token);
+            
+            switch(decoded.role) {
+                case "admin":
+                  localStorage.setItem("token", res.data.token) 
+                    history.push("/admin/dashboard")
+                  break;
+                case "user": 
+                    localStorage.setItem("token", res.data.token)  
+                    history.push({
+                        pathname: "/student",
+                        state: { detail: res.data.token },
+                    })
+                  break;
+                case "professor":
+                    localStorage.setItem("token", res.data.token) 
+                    history.push({
+                        pathname: "/professor",
+                        state: { detail: res.data.token },
+                    })
+                  break;
+                default:
+                    setError("Not authorized")
+              }
+  };
     const classes = useStyles();
     return (
-        <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -57,17 +113,19 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={submitStudentRecord} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="nom"
+                value={nom}
+                onChange={(e) => onInputChange(e)}
                 variant="outlined"
                 required
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label="Nom"
                 autoFocus
               />
             </Grid>
@@ -77,8 +135,10 @@ export default function Login() {
                 required
                 fullWidth
                 id="lastName"
-                label="Last Name"
-                name="lastName"
+                label="Prenom"
+                name="prenom"
+                value={prenom}
+                onChange={(e) => onInputChange(e)}
                 autoComplete="lname"
               />
             </Grid>
@@ -90,6 +150,8 @@ export default function Login() {
                 id="email"
                 label="Email Address"
                 name="email"
+                value={email}
+                onChange={(e) => onInputChange(e)}
                 autoComplete="email"
               />
             </Grid>
@@ -99,6 +161,8 @@ export default function Login() {
                 required
                 fullWidth
                 name="password"
+                value={password}
+                onChange={(e) => onInputChange(e)}
                 label="Password"
                 type="password"
                 id="password"
@@ -110,7 +174,7 @@ export default function Login() {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="primary" 
             className={classes.submit}
           >
             Sign in

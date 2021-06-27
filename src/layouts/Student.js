@@ -5,14 +5,13 @@ import PerfectScrollbar from "perfect-scrollbar";
 // reactstrap components
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
-// core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js"; 
+// core components 
 import Sidebar from "components/Sidebar/Sidebar.js";  
-import routes from "./routes";
+import routes from "./routesStudent";
 
 var ps;
 
-function Admin(props) {
+function Student(props) {
   const location = useLocation();
   const [backgroundColor, setBackgroundColor] = React.useState("blue");
   const mainPanel = React.useRef();
@@ -40,7 +39,7 @@ function Admin(props) {
     <div className="wrapper">
       <Sidebar {...props} routes={routes} backgroundColor={backgroundColor} />
       <div className="main-panel" ref={mainPanel}>
-        <DemoNavbar {...props} />
+         
         
         <Switch>
           {routes.map((prop, key) => {
@@ -52,13 +51,13 @@ function Admin(props) {
               />
             );
           })}
-          <Redirect from="/" to="/" />
-          <Redirect from="/admin" to="/admin/dashboard" />
           
+          <Redirect from="/Student" to="/Student/home" />
+          <Redirect from="/" to="/" />
         </Switch>
       </div> 
     </div>
   );
 }
 
-export default Admin;
+export default Student;

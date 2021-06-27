@@ -48,26 +48,7 @@ function Dashboard() {
         <Row>
           <Col xs={12} md={4}>
             <Card className="card-chart">
-              <CardHeader>
-                <h5 className="card-category">Global Sales</h5>
-                <CardTitle tag="h4">Shipped Products</CardTitle>
-                <UncontrolledDropdown>
-                  <DropdownToggle
-                    className="btn-round btn-outline-default btn-icon"
-                    color="default"
-                  >
-                    <i className="now-ui-icons loader_gear" />
-                  </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem>Action</DropdownItem>
-                    <DropdownItem>Another Action</DropdownItem>
-                    <DropdownItem>Something else here</DropdownItem>
-                    <DropdownItem className="text-danger">
-                      Remove data
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </CardHeader>
+               
               <CardBody>
                 <div className="chart-area">
                   <Line

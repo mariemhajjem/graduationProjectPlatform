@@ -7,9 +7,7 @@ import "assets/scss/now-ui-dashboard.scss?v1.5.0";
 import "assets/css/demo.css";
  
 
-ReactDOM.render(
-    <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+ReactDOM.render( 
+    <App /> ,
   document.getElementById("root")
 );
