@@ -1,71 +1,105 @@
-import React from "react";
-// react plugin for creating notifications over the dashboard
-// reactstrap components
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Table,
-  Row,
-  Col,
-} from "reactstrap";
-
-// core components
-import PanelHeader from "components/PanelHeader/PanelHeader.js";
-
-import { thead, tbody } from "variables/general"; 
+import React, { useState } from "react"
+import axios from "axios"  
+import PanelHeader from "components/PanelHeader/PanelHeader.js"; 
 
 function AcademicYear() {
-   
+  const [data, setData] = useState({
+    nom: "",
+    DateDepotPFE: "",
+  });
+
+  const [error, setError] = useState("");
+  function handle(e) {
+    const newdata = { ...data };
+    newdata[e.target.id] = e.target.value;
+    setData(newdata);
+    console.log(newdata);
+  }
+  function clearData(e) {
+    e.preventDefault();
+    setData({
+      nom: "",
+      DateDepotPFE: "",
+    });
+  }
+  async function add_academic_year(e) {
+    e.preventDefault();
+    let request = {
+      nomAnnee: data.nom,
+      DateDepotPFE: data.DateDepotPFE,
+    };
+    const res = await axios.post(
+      "http://localhost:5000/anneeUni/Create",
+      request
+    );
+    try {
+      if (res.data.type === "error") {
+        setError(res.data.error);
+      } else {
+        setData(res.data);
+        clearData(e);
+        window.location.reload();
+      }
+    } catch (err) {
+      setError("bad request");
+    }
+  }
   return (
     <>
-    <PanelHeader size="sm" />
-    <div className="content">
-      <Row>
-        <Col xs={12}>
-          <Card>
-            <CardHeader>
-              <CardTitle tag="h4">Simple Table</CardTitle>
-            </CardHeader>
-            <CardBody>
-              <Table responsive>
-                <thead className="text-primary">
-                  <tr>
-                    {thead.map((prop, key) => {
-                      if (key === thead.length - 1)
-                        return (
-                          <th key={key} className="text-right">
-                            {prop}
-                          </th>
-                        );
-                      return <th key={key}>{prop}</th>;
-                    })}
-                  </tr>
-                </thead>
-                <tbody>
-                  {tbody.map((prop, key) => {
-                    return (
-                      <tr key={key}>
-                        {prop.data.map((prop, key) => {
-                          if (key === thead.length - 1)
-                            return (
-                              <td key={key} className="text-right">
-                                {prop}
-                              </td>
-                            );
-                          return <td key={key}>{prop}</td>;
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
-            </CardBody>
-          </Card>
-        </Col>
-          
-      </Row>
+        <PanelHeader size="sm" />
+    <div className="container">
+      <form onSubmit={(e) => add_academic_year(e)} className="form-sm">
+        <legend style={{ fontFamily: "bold" }}>
+        Academic year
+        </legend>
+        <div className="form-row">
+          <div className="col">
+            <input
+              type="text"
+              value={data.nom}
+              onChange={(e) => handle(e)}
+              id="nom"
+              class="form-control"
+              placeholder="Academic year"
+            ></input>
+          </div>
+          <div className="col">
+            <input
+              type="date"
+              value={data.DateDepotPFE}
+              onChange={(e) => handle(e)}
+              id="DateDepotPFE"
+              class="form-control"
+              placeholder="Graduaton project Date"
+            ></input>
+          </div>
+        </div>
+        <br></br>
+        <div className="button">
+          <button type="submit" class="btn btn-success">
+            Ajouter
+          </button>
+          &nbsp;&nbsp;&nbsp;
+          <button type="reset" class="btn btn-warning " onClick={clearData}>
+            Annuler
+          </button>
+        </div>
+        <br></br>
+        {error && (
+          <div
+            style={{
+              color: "red",
+              fontWeight: "bold",
+              fontFamily: "monospace",
+              fontSize: "17px",
+            }}
+            severity="error"
+            onClick={() => setError(null)}
+          >
+            {props.error || error}
+          </div>
+        )}
+      </form>
     </div>
   </>
   );

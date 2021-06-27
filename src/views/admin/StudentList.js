@@ -167,8 +167,8 @@ return (
               </tr>
             </thead>
             <tbody>
-              {record.map((item) => (
-                <tr>
+              {record.map((item,key) => (
+                <tr value={key}>
                   <td> {item.nom}</td>
                   <td> {item.prenom}</td>
                   <td> {item.email}</td>

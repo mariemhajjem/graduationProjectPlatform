@@ -1,73 +1,90 @@
-import React from "react";
-
-// reactstrap components
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Table,
-  Row,
-  Col,
-} from "reactstrap";
-
-// core components
+import {React,useState,useEffect} from 'react'
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
-
-import { thead, tbody } from "variables/general";
+import axios from "axios";
 
 function GraduationProjects() {
-  return (
-    <>
-      <PanelHeader size="sm" />
-      <div className="content">
-        <Row>
-          <Col xs={12}>
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h4">Simple Table</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <Table responsive>
-                  <thead className="text-primary">
-                    <tr>
-                      {thead.map((prop, key) => {
-                        if (key === thead.length - 1)
-                          return (
-                            <th key={key} className="text-right">
-                              {prop}
-                            </th>
-                          );
-                        return <th key={key}>{prop}</th>;
-                      })}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tbody.map((prop, key) => {
-                      return (
-                        <tr key={key}>
-                          {prop.data.map((prop, key) => {
-                            if (key === thead.length - 1)
-                              return (
-                                <td key={key} className="text-right">
-                                  {prop}
-                                </td>
-                              );
-                            return <td key={key}>{prop}</td>;
-                          })}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
-          
-        </Row>
-      </div>
-    </>
-  );
+  const [search, setSearch] = useState("");
+    const [record, setRecord] = useState([]);
+
+  // On Page load display all records
+    const loadProjects = async () => {
+      var response = fetch("http://localhost:5000/pfe/Lists")
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (myJson) {
+          setRecord(myJson);
+        });
+    };
+    useEffect(() => {
+      loadProjects();
+    }, []);
+
+    // Insert Student Records
+    const submitStudentRecord = async (e) => {
+      e.preventDefault();
+      e.target.reset();
+      await axios.post("http://localhost:5000/utilisateur/", student);
+      alert("Data Inserted");
+
+      loadProjects();
+    };
+
+    // Search Records here
+    const searchRecords = () => {
+      alert(search);
+      axios
+        .get(`http://localhost:5000/utilisateur/${search}`)
+        .then((response) => {
+          setRecord(response.data);
+        });
+    };
+    return (
+      <>
+        <PanelHeader size="sm" />
+        <div class="col-sm-8">
+          <h5 class="text-center  ml-4 mt-4  mb-5">List Graduation Projects</h5>
+          <div class="input-group mb-4 mt-3">
+            <div class="form-outline">
+              <input
+                type="text"
+                id="form1"
+                onChange={(e) => setSearch(e.target.value)}
+                class="form-control"
+                placeholder="Search Student Here"
+                style={{ backgroundColor: "#ececec" }}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={searchRecords}
+              class="btn btn-success"
+            >
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+          <table class="table table-hover  table-striped table-bordered ml-4 ">
+            <thead>
+              <tr>
+                <th>Titre</th>
+                <th>Graduation project</th> 
+                <th>Professor</th> 
+              </tr>
+            </thead>
+            <tbody>
+              {record.map((item) => (
+                <tr>
+                  <td> {item.title}</td>  
+                  <td> {item.userId}</td> 
+                  <td> {item.enseignantId}</td>
+                   
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+    );
 }
 
 export default GraduationProjects;

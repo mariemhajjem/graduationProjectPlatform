@@ -5,7 +5,7 @@ import { Table, Modal, Button, Form } from "react-bootstrap"
 import * as AiIcons from "react-icons/ai"
 import axios from "axios"
 import jwt from 'jwt-decode'
-import {useDropzone} from 'react-dropzone'
+import {useDropzone} from 'react-dropzone' 
  
 export default function GraduationProject(props) {
     const location = useLocation()
@@ -19,8 +19,26 @@ export default function GraduationProject(props) {
     const [pfeDetails, setPfe] = useState({ rapport: ""})
     const [error, setError] = useState("")
     const [rapport, setUploadedFile] = useState ('');
-    const [title, setFileTitle] = useState ('');
-    const [en, setEn] = useState ('')
+    const [title, setFileTitle] = useState (''); 
+    const [professor,setProfessor] = useState([]);
+    const [prof, setProf] = useState('');
+
+    function handleprofChange(e) {
+      setProf(e.target.value);
+      console.log(prof);
+    }
+    const loadProfessors = async () => {
+      var response = fetch("http://localhost:5000/utilisateur/professor")
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (myJson) {
+          setProfessor(myJson);
+        });
+    };
+    useEffect(() => {
+      loadProfessors();
+    }, []);
 
     function handle(e) {
         const newdata = { ...pfeupdate }
@@ -40,11 +58,7 @@ export default function GraduationProject(props) {
         const res = await axios.get(`http://localhost:5000/pfe/list/${id}`)
         setPFE(res.data)
     }
-    const fetchen = async () => {
-  
-        const res = await axios.get(`http://localhost:5000/users/en`)
-        setEn(res.data)
-    }
+    
     
     const update_pfe = async (e, idPfe) => {
         let request = {
@@ -113,13 +127,13 @@ export default function GraduationProject(props) {
             setError("erreur")
         }
     }
+    
     function handleFormSubmittion (e) {
         e.preventDefault ();
     
         let form = document.getElementById ('form');
         let formData = new FormData (form);
-    
-        // do something
+        formData.append("id",prof)
         axios.post(`http://localhost:5000/pfe/Create/`, formData, { headers: {"Authorization" : `Bearer ${token}`}})
         console.log("Form submitted")
         window.location.reload();
@@ -137,7 +151,7 @@ export default function GraduationProject(props) {
             <h3 className="date">Heure: {new Date().toLocaleTimeString()}</h3>
                 <legend style={{ fontFamily: "bold" }}> Ajouter votre projet de fin d'étude  </legend>
                  
-                <div className="col">
+                    <div className="col">
                     
                         <Form.Control size="lg" type="text" placeholder="Graduation project title"name="title"
                         onChange={handleFileTitle}
@@ -149,9 +163,18 @@ export default function GraduationProject(props) {
                             name="rapport"
                             value={rapport}
                             onChange={handleUploadedFile}
-                        />    
-                </div>
-                <br />
+                        />   
+                        <br />
+                        <Form.Control as="select"
+                                onChange={handleprofChange}
+                                className="browser-default custom-select">
+                                {professor.map((item,key) => (
+                                    <option key={key} value={item._id}>{item.nom} {item.prenom}</option>
+                                ))}
+                                 
+                        </Form.Control>
+                    </div>
+                
                 <br />
                 <Button type="submit"  variant="primary">
                     Add
@@ -183,12 +206,12 @@ export default function GraduationProject(props) {
                 
                 <thead>
                     <tr>
-                    <th scope="col"> Name</th>
+                        <th scope="col"> Name</th>
                         <th scope="col"> Graduation project report</th>
                         <th scope="col"> Delete</th>
                     </tr>
                 </thead>
-
+                <tbody>
                 {pfe.map((item) => {
                     return (
                         <tr>
@@ -202,6 +225,7 @@ export default function GraduationProject(props) {
                         </tr>
                     )
                 })}
+                </tbody>
             </Table>
             <Modal show={show} onHide={handleClose} size="lg" centered>
                 <Modal.Header closeButton>
