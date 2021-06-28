@@ -15,14 +15,14 @@ export default function GraduationProject(props) {
     const [pfeupdate, setPfeupdate] = useState({})
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
-    const [pfe, setPFE] = useState([])
+    const [pfe, setPFE] = useState({})
     const [pfeDetails, setPfe] = useState({ rapport: ""})
     const [error, setError] = useState("")
     const [rapport, setUploadedFile] = useState ('');
     const [title, setFileTitle] = useState (''); 
     const [professor,setProfessor] = useState([]);
     const [prof, setProf] = useState('');
-
+ 
     function handleprofChange(e) {
       setProf(e.target.value);
       console.log(prof);
@@ -49,26 +49,37 @@ export default function GraduationProject(props) {
     const suppPfe = async (id) => {
         console.log(id)
         const res = await axios.delete(`http://localhost:5000/pfe/DeleteOne/${id}`)
-        setPfeupdate(res.data)
-        handleShow()
-        window.location.reload();
+        fetchpfe() 
     }
     const fetchpfe = async () => {
         const id=decoded.id;
-        const res = await axios.get(`http://localhost:5000/pfe/list/${id}`)
+        const res = await axios.get(`http://localhost:5000/pfe/List/${id}`)
+        console.log(res.data )
         setPFE(res.data)
-    }
-    
-    
-    const update_pfe = async (e, idPfe) => {
-        let request = {
-            nom_pfe: pfeupdate.nom_pfe,
-            rapport: pfeupdate.rapport,
-        }
         
-        e.preventDefault()
-        try {
-            const res = await axios.put(`http://localhost:5000/pfe/${idPfe}`, request)
+    }
+    const { rapportUpdate, titleUpdate, profId} = pfeupdate;
+    const onInputChange = e => {
+        setPfeupdate({ ...pfeupdate,[e.target.name]: e.target.value });
+    };
+    
+    const updateProject = async e => {
+        let form = document.getElementById ('formUpdate');
+        let formData = new FormData (form);
+        formData.append("id",profId)
+        e.preventDefault();
+        await axios.put(`http://localhost:5000/pfe/update/${pfe._id}`, pfeupdate);
+         
+    };
+    const update_pfe = async (e, idPfe) => {
+        setPfeupdate({
+            rapportUpdate : pfe.rapport,
+            titleUpdate : pfe.title,
+            profId : prof._id
+        })
+        handleShow()
+        /* try {
+            const res = await axios.put(`http://localhost:5000/pfe/update/${idPfe}`, request)
             if (res.data.type === "error" || res.data.type === "délais") {
                 alert(res.data.error)
             }
@@ -77,19 +88,15 @@ export default function GraduationProject(props) {
         } catch (err) {
             console.log(err)
             alert("erreur")
-        }
+        } */
     }
     useEffect(() => {
         fetchpfe()
     }, [])
  
-    
     function clearData(e) {
         e.preventDefault()
-        setPfe({
-            nom_pfe: "", 
-            rapport: "",
-        })
+        setPfe({})
     }
     
     function handle(e) {
@@ -99,7 +106,6 @@ export default function GraduationProject(props) {
             console.log( event.target.result)
         };
         reader.readAsDataURL(file);
-         
         setPfe({ ...pfeDetails ,[e.target.id]:e.target.value})
          
     }
@@ -130,13 +136,12 @@ export default function GraduationProject(props) {
     
     function handleFormSubmittion (e) {
         e.preventDefault ();
-    
         let form = document.getElementById ('form');
         let formData = new FormData (form);
         formData.append("id",prof)
         axios.post(`http://localhost:5000/pfe/Create/`, formData, { headers: {"Authorization" : `Bearer ${token}`}})
         console.log("Form submitted")
-        window.location.reload();
+        fetchpfe() 
       }
     function handleUploadedFile (e) {
         setUploadedFile (e.target.value);
@@ -145,125 +150,198 @@ export default function GraduationProject(props) {
         setFileTitle (e.target.value);
       }  
     return (
-        <React.Fragment>
-            <PanelHeader size="sm" />
-            <Form onSubmit={(e) => handleFormSubmittion(e)} enctype="multipart/form-data" id="form">
-            <h3 className="date">Heure: {new Date().toLocaleTimeString()}</h3>
-                <legend style={{ fontFamily: "bold" }}> Ajouter votre projet de fin d'étude  </legend>
-                 
-                    <div className="col">
+      <React.Fragment>
+        <PanelHeader size="sm" />
+        <Form
+          onSubmit={(e) => handleFormSubmittion(e)}
+          enctype="multipart/form-data"
+          id="form"
+        >
+          <h3 className="date">Heure: {new Date().toLocaleTimeString()}</h3>
+          <legend style={{ fontFamily: "bold" }}>
+            {" "}
+            Ajouter votre projet de fin d'étude{" "}
+          </legend>
+          <div className="col">
+            <Form.Control
+              size="lg"
+              type="text"
+              placeholder="Graduation project title"
+              name="title"
+              onChange={handleFileTitle}
+              value={title}
+            />
+
+            <Form.File
+              className="position-relative"
+              required
+              name="rapport"
+              value={rapport}
+              onChange={handleUploadedFile}
+            />
+            <br />
+            <Form.Control
+              as="select"
+              onChange={handleprofChange}
+              className="browser-default custom-select"
+            >
+              {professor.map((item, key) => (
+                <option key={key} value={item._id}>
+                  {item.nom} {item.prenom}
+                </option>
+              ))}
+            </Form.Control>
+          </div>
+          <br />
+          <Button type="submit" variant="primary">
+            Add
+          </Button>
+          &nbsp;&nbsp;&nbsp;
+          <Button variant="warning" type="reset" onClick={clearData}>
+            Cancel
+          </Button>
+          <br></br>
+          <br></br>
+          {error && (
+            <div
+              className="error"
+              style={{
+                color: "red",
+                fontWeight: "bold",
+                fontFamily: "monospace",
+                fontSize: "17px",
+              }}
+              severity="error"
+              onClick={() => setError(null)}
+            >
+              {props.error || error}
+            </div>
+          )}
+        </Form>
+        <br />
+        <br />
+        <Table size="lg" bordered bordered variant="dark">
+          <thead>
+            <tr>
+              <th scope="col"> Name</th>
+              <th scope="col"> Graduation project report</th>
+              <th scope="col"> Confirmed</th>
+              <th scope="col"> Action</th>
+            </tr>
+          </thead>
+          {pfe && (
+            <tbody>
+              <tr>
+                <td> {pfe.title}</td>
+                <td> {pfe.rapport}</td>
+                <td> 
+                  {(() => {
+                    if (pfe.confirmed==1) {
+                      return  "Yes";
+                    } else if (pfe.confirmed==0) {
+                      return "No";
+                    } else {
+                      return "Not yet";
+                    }
+                  })()}
+                </td>
+                <td width="5px">
+                   
+                  <span
+                    style={{ fontSize: "18px" }}
+                    onClick={() => update_pfe(pfe._id)}
+                  >
+                      <AiIcons.AiFillEdit />
                     
-                        <Form.Control size="lg" type="text" placeholder="Graduation project title"name="title"
-                        onChange={handleFileTitle}
-                            value={title} />
-                        
-                        <Form.File
-                            className="position-relative"
-                            required
-                            name="rapport"
-                            value={rapport}
-                            onChange={handleUploadedFile}
-                        />   
-                        <br />
-                        <Form.Control as="select"
-                                onChange={handleprofChange}
-                                className="browser-default custom-select">
-                                {professor.map((item,key) => (
-                                    <option key={key} value={item._id}>{item.nom} {item.prenom}</option>
-                                ))}
-                                 
-                        </Form.Control>
-                    </div>
-                
-                <br />
-                <Button type="submit"  variant="primary">
-                    Add
-                </Button>
-                &nbsp;&nbsp;&nbsp;
-                <Button variant="warning" type="reset" onClick={clearData}>
-                    Cancel
-                </Button>
-                <br></br>
-                <br></br>
-                {error && (
-                    <div className="error"
-                        style={{
-                            color: "red",
-                            fontWeight: "bold",
-                            fontFamily: "monospace",
-                            fontSize: "17px",
-                        }}
-                        severity="error"
-                        onClick={() => setError(null)}
-                    >
-                        {props.error || error}
-                    </div>
-                )}
-            </Form>
+                  </span>
+                  <span
+                    style={{ fontSize: "18px" }}
+                    onClick={() => {
+                        const confirmBox = window.confirm(
+                          "Do you really want to delete " + pfe.title
+                        );
+                        if (confirmBox === true) {suppPfe(pfe._id)}}}
+                  >
+                    <i
+                          class="far fa-trash-alt"
+                          style={{ fontSize: "18px", marginRight: "5px" }}
+                        ></i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          )}
+        </Table>
+        <Modal show={show} onHide={handleClose} size="lg" centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Update Graduation project</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          <Form
+          onSubmit={(e) => updateProject(e)}
+          enctype="multipart/form-data"
+          id="formUpdate"
+        > 
+          <div className="col">
+            <Form.Control
+              size="lg"
+              type="text"
+              placeholder="Graduation project title"
+              name="titleUpdate"
+              onChange={e => onInputChange(e)}
+              value={titleUpdate}
+            />
+
+            <Form.File
+              className="position-relative"
+              required
+              name="rapportUpdate" 
+              onChange={e => onInputChange(e)}
+            />
             <br />
-            <br />
-            <Table size="lg" bordered bordered variant="dark">
-                
-                <thead>
-                    <tr>
-                        <th scope="col"> Name</th>
-                        <th scope="col"> Graduation project report</th>
-                        <th scope="col"> Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {pfe.map((item) => {
-                    return (
-                        <tr>
-                            <td> {item.title}</td>
-                            <td> {item.rapport}</td>
-                            <td width="5px">
-                                <span style={{ fontSize: "18px" }} onClick={() => suppPfe(item._id)} >
-                                    <AiIcons.AiFillEdit />
-                                </span>{" "}
-                            </td>
-                        </tr>
-                    )
-                })}
-                </tbody>
-            </Table>
-            <Modal show={show} onHide={handleClose} size="lg" centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modifier mon PFE</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={(e) => { update_pfe(e, pfeupdate._id) }} >
-                        <div className="col">
-                            <input
-                                id="nom_pfe"
-                                type="text"
-                                defaultValue={pfeupdate.nom_pfe}
-                                onChange={(e) => handle(e)}
-                                class="form-control"
-                            ></input>
-                        </div>
-                        <br></br>
-                        <div className="col">
-                            <textarea
-                                id="rapport"
-                                type="text"
-                                defaultValue={pfeupdate.rapport}
-                                onChange={(e) => handle(e)}
-                                rows="5"
-                                class="form-control"
-                            ></textarea>
-                        </div>
-                        <Modal.Footer>
-                            <Button variant="primary" type="submit">
-                                confirm
-                            </Button>
-                            <Button variant="secondary" onClick={handleClose}>
-                                cancel
-                            </Button>
-                        </Modal.Footer>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-        </React.Fragment>
-    )
+            <Form.Control
+              as="select"
+              name="profId"
+              value={profId}
+              defaultValue={profId}
+              onChange={e => onInputChange(e)}
+              className="browser-default custom-select"
+            >
+              {professor.map((item, key) => (
+                <option key={key} value={item._id}>
+                  {item.nom} {item.prenom}
+                </option>
+              ))}
+            </Form.Control>
+          </div>
+          <br />
+          <Button type="submit" variant="primary">
+            Add
+          </Button>
+          &nbsp;&nbsp;&nbsp;
+          <Button variant="warning" type="reset" onClick={clearData}>
+            Cancel
+          </Button>
+          <br></br>
+          <br></br>
+          {error && (
+            <div
+              className="error"
+              style={{
+                color: "red",
+                fontWeight: "bold",
+                fontFamily: "monospace",
+                fontSize: "17px",
+              }}
+              severity="error"
+              onClick={() => setError(null)}
+            >
+              {props.error || error}
+            </div>
+          )}
+        </Form>
+          </Modal.Body>
+        </Modal>
+      </React.Fragment>
+    );
 }

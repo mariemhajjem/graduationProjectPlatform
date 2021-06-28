@@ -8,7 +8,7 @@ import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 // core components 
 import Sidebar from "components/Sidebar/Sidebar.js";  
 import routes from "./routesStudent";
-
+import DemoNavbar from "components/Navbars/DemoNavbar.js"; 
 var ps;
 
 function Student(props) {
@@ -39,7 +39,7 @@ function Student(props) {
     <div className="wrapper">
       <Sidebar {...props} routes={routes} backgroundColor={backgroundColor} />
       <div className="main-panel" ref={mainPanel}>
-         
+      <DemoNavbar {...props} />
         
         <Switch>
           {routes.map((prop, key) => {

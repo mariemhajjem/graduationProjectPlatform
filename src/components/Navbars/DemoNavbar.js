@@ -1,23 +1,6 @@
 import React from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Container,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
-  Input,
-} from "reactstrap";
-
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Container } from "reactstrap";
 import routes from "../../layouts/routes";
 
 function DemoNavbar(props) {

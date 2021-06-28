@@ -247,12 +247,11 @@ function ProfessorList() {
                             deleteRecord(item._id);
                           }
                         }}
-                      >
-                        {" "}
-                        <i
+                      > 
+                       <i
                           class="far fa-trash-alt"
                           style={{ fontSize: "18px", marginRight: "5px" }}
-                        ></i>{" "}
+                        ></i> 
                       </a>
 
                       <Link
