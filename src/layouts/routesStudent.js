@@ -1,6 +1,5 @@
  
-import GraduationProject from "../views/Student/GraduationProject"; 
-import Upgrade from "../views/admin/Upgrade.js";
+import GraduationProject from "../views/Student/GraduationProject";  
 import ChangePassword from "../views/Student/ChangePassword";
 
 var dashRoutes = [ 
@@ -18,12 +17,5 @@ var dashRoutes = [
     component: GraduationProject,
     layout: "/Student",
   },  
-  { 
-    path: "/login",
-    name: "Sign out",
-    icon: "objects_spaceship",
-    component: Upgrade,
-    layout: "localhost:3000",
-  },
 ];
 export default dashRoutes;

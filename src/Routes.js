@@ -6,6 +6,8 @@ import  Professor  from './views/Professor/index';
 import  Student  from './views/Student/index';
 import  EditStudent  from './views/admin/EditStudent';
 import  StudentDetails  from './views/admin/StudentDetails';
+import  EditProfessor  from './views/admin/EditProfessor';
+import  ProfessorDetails  from './views/admin/ProfessorDetails';
 
 export const Routes = () => (
   <BrowserRouter>
@@ -27,6 +29,12 @@ export const Routes = () => (
       </Route>
       <Route exact path="/StudentDetails/:id">
         <StudentDetails />
+      </Route>
+      <Route exact path="/EditProfessor/editID/:id">
+        <EditProfessor />
+      </Route>
+      <Route exact path="/ProfessorDetails/:id">
+        <ProfessorDetails />
       </Route>
     </Switch>
   </BrowserRouter>

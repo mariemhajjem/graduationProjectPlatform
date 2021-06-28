@@ -44,25 +44,7 @@ function GraduationProjects() {
         <PanelHeader size="sm" />
         <div class="col-sm-8">
           <h5 class="text-center  ml-4 mt-4  mb-5">List Graduation Projects</h5>
-          <div class="input-group mb-4 mt-3">
-            <div class="form-outline">
-              <input
-                type="text"
-                id="form1"
-                onChange={(e) => setSearch(e.target.value)}
-                class="form-control"
-                placeholder="Search Student Here"
-                style={{ backgroundColor: "#ececec" }}
-              />
-            </div>
-            <button
-              type="button"
-              onClick={searchRecords}
-              class="btn btn-success"
-            >
-              <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
-          </div>
+           
           <table class="table table-hover  table-striped table-bordered ml-4 ">
             <thead>
               <tr>

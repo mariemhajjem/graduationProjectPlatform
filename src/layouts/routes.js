@@ -2,8 +2,7 @@ import Dashboard from "../views/admin/Dashboard";
 import AcademicYear from "../views/admin/AcademicYear"; 
 import ProfessorList from "../views/admin/ProfessorList.js";
 import GraduationProjects from "../views/admin/GraduationProjects.js";
-import StudentList from "../views/admin/StudentList.js";
-import Upgrade from "../views/admin/Upgrade.js";
+import StudentList from "../views/admin/StudentList.js"; 
 import UserPage from "../views/admin/UserPage.js";
 
 var dashRoutes = [
@@ -49,13 +48,6 @@ var dashRoutes = [
     icon: "business_briefcase-24",
     component: ProfessorList,
     layout: "/admin",
-  }, 
-  { 
-     
-    name: "Sign out",
-    icon: "objects_spaceship",
-    component: Upgrade,
-    layout: "localhost:3000",
-  },
+  } 
 ];
 export default dashRoutes;

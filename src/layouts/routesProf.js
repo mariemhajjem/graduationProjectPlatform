@@ -1,5 +1,4 @@
-import ListGraduationProject from "../views/Professor/ListGraduationProject"; 
-import Upgrade from "../views/admin/Upgrade.js";
+import ListGraduationProject from "../views/Professor/ListGraduationProject";  
 import ChangePassword from "../views/Professor/ChangePassword";
 
 var dashRoutes = [ 
@@ -16,13 +15,6 @@ var dashRoutes = [
     icon: "education_hat",
     component: ListGraduationProject,
     layout: "/professor",
-  }, 
-  { 
-    path: "/login",
-    name: "Sign out",
-    icon: "objects_spaceship",
-    component: Upgrade,
-    layout: "localhost:3000",
-  },
+  },  
 ];
 export default dashRoutes;
