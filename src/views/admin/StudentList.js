@@ -46,10 +46,9 @@ function StudentList() {
   };
 
   // Search Records here
-  const searchRecords = () => {
-    alert(search);
+  const searchRecords = () => { 
     axios
-      .get(`http://localhost:5000/utilisateur/${search}`)
+      .get(`http://localhost:5000/utilisateur/student/${search}`)
       .then((response) => {
         setRecord(response.data);
       });
@@ -70,10 +69,10 @@ function StudentList() {
   return (
     <section>
       <PanelHeader size="sm" />
-      <div class="container">
         <h4 className="mb-3 text-center mt-4">Student List </h4>
-        <div class="row mt-3">
-          <div class="col-sm-4">
+      <div class="container">
+        <div class="row mt-4">
+          <div class="col-sm-5">
             <div
               className="box p-3 mb-3 mt-5"
               style={{ border: "1px solid #d0d0d0" }}
@@ -134,7 +133,7 @@ function StudentList() {
               </form>
             </div>
           </div>
-          <div class="col-sm-8">
+          <div class="col-sm-12">
             <h5 class="text-center  ml-4 mt-4  mb-5">List Students</h5>
             <div class="input-group mb-4 mt-3">
               <div class="form-outline">
@@ -155,7 +154,7 @@ function StudentList() {
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
             </div>
-            <table class="table table-hover  table-striped table-bordered ml-4 ">
+            <table class="table table-hover table-striped table-bordered ml-4 ">
               <thead>
                 <tr>
                   <th>Nom</th>

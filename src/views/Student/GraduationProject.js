@@ -132,191 +132,205 @@ export default function GraduationProject(props) {
     return (
       <React.Fragment>
         <PanelHeader size="sm" />
-          <div className="pfe-container">
-          <h3 className="date">Date: { getCurrentDate() } Heure: {new Date().toLocaleTimeString()} <br />
-          Limit Date: {date.slice(0, 10) } </h3>
-          { getCurrentDate()<date ? 
-          <>
-          <Form
-          onSubmit={(e) => handleFormSubmittion(e)}
-          encType="multipart/form-data"
-          id="form"
-          >
-          <legend style={{ fontFamily: "bold" }}>
-            {" "}
-            Ajouter votre projet de fin d'étude{" "}
-          </legend>
-          <div className="col">
-            <Form.Control
-              size="lg"
-              required
-              type="text"
-              placeholder="Graduation project title"
-              name="title"
-              onChange={handleFileTitle}
-              value={title}
-            />
+        <div className="pfe-container">
+          <h3 className="date">
+            Date: {getCurrentDate()} <br />  {date.slice(0, 10)?  <>Limit Date : { date.slice(0, 10) } </>: ""} 
+          </h3>
+          {getCurrentDate() < date ? (
+            <>
+              <Form
+                onSubmit={(e) => handleFormSubmittion(e)}
+                encType="multipart/form-data"
+                id="form"
+              >
+                <legend style={{ fontFamily: "bold" }}> Ajouter votre projet de fin d'étude </legend>
+                <div className="col">
+                  <Form.Control
+                    size="lg"
+                    required
+                    type="text"
+                    placeholder="Graduation project title"
+                    name="title"
+                    onChange={handleFileTitle}
+                    value={title}
+                  />
 
-            <Form.File
-              className="position-relative"
-              required
-              name="rapport"
-              value={rapport}
-              onChange={handleUploadedFile}
-            />
-            <br />
-            <Form.Control
-              as="select"
-              required
-              onChange={handleprofChange}
-              className="browser-default custom-select"
-            >
-              {professor.map((item, key) => (
-                <option key={key} value={item._id}>
-                  {item.nom} {item.prenom}
-                </option>
-              ))}
-            </Form.Control>
-          </div>
-          <br />
-          <Button type="submit" variant="primary">
-            Add
-          </Button>
-           &nbsp;&nbsp;&nbsp;
-          <Button variant="warning" type="reset" onClick={()=>{setFileTitle('');setUploadedFile('')}}>
-            Cancel
-          </Button>
-          <br></br>
-          <br></br>
-          </Form> </> : <h3>Date has been exceeded</h3> }
-
-          
-        <br />
-        <br />
-        <Table size="lg" bordered bordered variant="dark">
-          <thead>
-            <tr>
-              <th scope="col"> Name</th>
-              <th scope="col"> Graduation project report</th>
-              <th scope="col"> Confirmed</th>
-              { getCurrentDate()<date &&
-              <th scope="col"> Update</th>
-                }
-              <th scope="col"> Delete</th>
-            </tr>
-          </thead>
-          {pfe && (
-            <tbody>
-              <tr>
-                <td> {pfe.title}</td>
-                <td> {pfe.rapport}</td>
-                <td>
-                  {(() => {
-                    if (pfe.confirmed == 1) {
-                      return "Yes";
-                    } else if (pfe.confirmed == 0) {
-                      return "No";
-                    } else {
-                      return "Not yet";
-                    }
-                  })()}
-                </td>
-                { getCurrentDate()<date && 
-                  <td >
-                  <span
-                    style={{ fontSize: "18px" }}
-                    onClick={() => showUpdate()}
+                  <Form.File
+                    className="position-relative"
+                    required
+                    name="rapport"
+                    value={rapport}
+                    onChange={handleUploadedFile}
+                  />
+                  <br />
+                  <Form.Control
+                    as="select"
+                    required
+                    onChange={handleprofChange}
+                    className="browser-default custom-select"
                   >
-                    <AiIcons.AiFillEdit />
-                  </span>
-                  </td> }
-                  <td>
-                  <span 
-                    onClick={() => {
-                      const confirmBox = window.confirm(
-                        "Do you really want to delete " + pfe.title
-                      );
-                      if (confirmBox === true) {
-                        suppPfe(pfe._id);
-                      }
-                    }}
-                  >
-                    <i className="far fa-trash-alt" ></i>
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          )}
-        </Table>
-        <Modal show={show} onHide={handleClose} size="lg" centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Update Graduation project</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form
-              onSubmit={(e) => updateProject(e)}
-              encType="multipart/form-data"
-              id="formUpdate"
-            >
-              <div className="col">
-                <Form.Control
-                  size="lg"
-                  type="text"
-                  placeholder="Graduation project title"
-                  name="titleUpdate" 
-                  defaultValue={titleUpdate}
-                />
-
-                <Form.File
-                  className="position-relative"
-                  required
-                  name="UpdatedFile"
-                  defaultValue={UpdatedFile}
-                  onChange={handleUpdatedFile}
-                />
-                <br />
-                <Form.Control
-                  as="select"
-                  required
-                  name="profId"
-                  defaultValue={profId}  
-                  className="browser-default custom-select"
-                >
-                  {professor.map((item, key) => (
-                    <option key={key} value={item._id}>
-                      {item.nom} {item.prenom}
-                    </option>
-                  ))}
-                </Form.Control>
-              </div>
-              <br />
-              <Button type="submit" variant="primary">
-                Add
-              </Button>
-              &nbsp;&nbsp;&nbsp;
-              <Button variant="warning" type="reset" onClick={() => {setUpdatedFile('');setTitleUpdate('')}}>
-                Cancel
-              </Button>
-              <br></br>
-              <br></br>
-              {error && (
-                <div
-                  className="error"
-                  style={{
-                    color: "red",
-                    fontWeight: "bold",
-                    fontFamily: "monospace",
-                    fontSize: "17px",
-                  }}
-                  severity="error"
-                  onClick={() => setError(null)}
-                >
-                  {props.error || error}
+                    {professor.map((item, key) => (
+                      <option key={key} value={item._id}>
+                        {item.nom} {item.prenom}
+                      </option>
+                    ))}
+                  </Form.Control>
                 </div>
-              )}
-            </Form>
-          </Modal.Body>
-        </Modal>
+                <br />
+                <Button type="submit" variant="primary">
+                  Add
+                </Button>
+                &nbsp;&nbsp;&nbsp;
+                <Button
+                  variant="warning"
+                  type="reset"
+                  onClick={() => {
+                    setFileTitle("");
+                    setUploadedFile("");
+                  }}
+                >
+                  Cancel
+                </Button>
+                <br></br>
+                <br></br>
+              </Form>{" "}
+            </>
+          ) : (
+            <h3>Sorry, you can't deposit.</h3>
+          )}
+
+          <br />
+          <br />
+          <Table size="lg" bordered bordered variant="dark">
+            <thead>
+              <tr>
+                <th scope="col"> Name</th>
+                <th scope="col"> Graduation project report</th>
+                <th scope="col"> Confirmed</th>
+                {getCurrentDate() < date && <th scope="col"> Update</th>}
+                <th scope="col"> Delete</th>
+              </tr>
+            </thead>
+            {pfe && (
+              <tbody>
+                <tr>
+                  <td> {pfe.title}</td>
+                  <td> {pfe.rapport}</td>
+                  <td>
+                    {(() => {
+                      if (pfe.confirmed == 1) {
+                        return "Yes";
+                      } else if (pfe.confirmed == 0) {
+                        return "No";
+                      } else {
+                        return "Not yet";
+                      }
+                    })()}
+                  </td>
+                  {getCurrentDate() < date && (
+                    <td>
+                      <span
+                        style={{ fontSize: "18px" }}
+                        onClick={() => showUpdate()}
+                      >
+                        <AiIcons.AiFillEdit />
+                      </span>
+                    </td>
+                  )}
+                  <td>
+                    <span
+                      onClick={() => {
+                        const confirmBox = window.confirm(
+                          "Do you really want to delete " + pfe.title
+                        );
+                        if (confirmBox === true) {
+                          suppPfe(pfe._id);
+                        }
+                      }}
+                    >
+                      <i className="far fa-trash-alt"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            )}
+          </Table>
+          <Modal show={show} onHide={handleClose} size="lg" centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Update Graduation project</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form
+                onSubmit={(e) => updateProject(e)}
+                encType="multipart/form-data"
+                id="formUpdate"
+              >
+                <div className="col">
+                  <Form.Control
+                    size="lg"
+                    type="text"
+                    placeholder="Graduation project title"
+                    name="titleUpdate"
+                    defaultValue={titleUpdate}
+                  />
+
+                  <Form.File
+                    className="position-relative"
+                    required
+                    name="UpdatedFile"
+                    defaultValue={UpdatedFile}
+                    onChange={handleUpdatedFile}
+                  />
+                  <br />
+                  <Form.Control
+                    as="select"
+                    required
+                    name="profId"
+                    defaultValue={profId}
+                    className="browser-default custom-select"
+                  >
+                    {professor.map((item, key) => (
+                      <option key={key} value={item._id}>
+                        {item.nom} {item.prenom}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </div>
+                <br />
+                <Button type="submit" variant="primary">
+                  Add
+                </Button>
+                &nbsp;&nbsp;&nbsp;
+                <Button
+                  variant="warning"
+                  type="reset"
+                  onClick={() => {
+                    setUpdatedFile("");
+                    setTitleUpdate("");
+                  }}
+                >
+                  Cancel
+                </Button>
+                <br></br>
+                <br></br>
+                {error && (
+                  <div
+                    className="error"
+                    style={{
+                      color: "red",
+                      fontWeight: "bold",
+                      fontFamily: "monospace",
+                      fontSize: "17px",
+                    }}
+                    severity="error"
+                    onClick={() => setError(null)}
+                  >
+                    {props.error || error}
+                  </div>
+                )}
+              </Form>
+            </Modal.Body>
+          </Modal>
         </div>
       </React.Fragment>
     );

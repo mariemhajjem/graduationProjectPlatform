@@ -2,8 +2,7 @@ import Dashboard from "../views/admin/Dashboard";
 import AcademicYear from "../views/admin/AcademicYear"; 
 import ProfessorList from "../views/admin/ProfessorList.js";
 import GraduationProjects from "../views/admin/GraduationProjects.js";
-import StudentList from "../views/admin/StudentList.js"; 
-import UserPage from "../views/admin/UserPage.js";
+import StudentList from "../views/admin/StudentList.js";  
 
 var dashRoutes = [
   {
@@ -12,14 +11,7 @@ var dashRoutes = [
     icon: "business_chart-bar-32",
     component: Dashboard,
     layout: "/admin",
-  },
-  {
-    path: "/user-page",
-    name: "User Profile",
-    icon: "users_single-02",
-    component: UserPage,
-    layout: "/admin",
-  },
+  }, 
   {
     path: "/AcademicYear",
     name: "Academic Year",

@@ -62,9 +62,9 @@ function ProfessorList() {
 
   // Search Records here
   const searchRecords = () => {
-    alert(search);
+     
     axios
-      .get(`http://localhost:5000/utilisateur/${search}`)
+      .get(`http://localhost:5000/utilisateur/prof/${search}`)
       .then((response) => {
         setRecord(response.data);
       });
@@ -133,11 +133,11 @@ function ProfessorList() {
       </div>
     </> }*/
     <section>
-      <PanelHeader size="sm" />
+      <PanelHeader size="sm" /> 
       <div class="container">
-        <h4 className="mb-3 text-center mt-4">Professor List </h4>
+        
         <div class="row mt-3">
-          <div class="col-sm-4">
+          <div class="col-sm-5">
             <div
               className="box p-3 mb-3 mt-5"
               style={{ border: "1px solid #d0d0d0" }}
@@ -198,7 +198,7 @@ function ProfessorList() {
               </form>
             </div>
           </div>
-          <div class="col-sm-8">
+          <div class="col-sm-10">
             <h5 class="text-center  ml-4 mt-4  mb-5">List Professors</h5>
             <div class="input-group mb-4 mt-3">
               <div class="form-outline">
@@ -207,7 +207,7 @@ function ProfessorList() {
                   id="form1"
                   onChange={(e) => setSearch(e.target.value)}
                   class="form-control"
-                  placeholder="Search Student Here"
+                  placeholder="Search professor Here"
                   style={{ backgroundColor: "#ececec" }}
                 />
               </div>
@@ -219,7 +219,7 @@ function ProfessorList() {
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
             </div>
-            <table class="table table-hover  table-striped table-bordered ml-4 ">
+            <table class="table table-hover  table-striped table-bordered ml-6 ">
               <thead>
                 <tr>
                   <th>Nom</th>
@@ -236,7 +236,7 @@ function ProfessorList() {
                     <td> {item.prenom}</td>
                     <td> {item.email}</td>
                     <td> {item.cin}</td>
-                    <td>
+                    <td >
                       <a
                         className="text-danger mr-2"
                         onClick={() => {
