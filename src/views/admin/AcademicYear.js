@@ -29,7 +29,7 @@ function AcademicYear() {
       DateDepotPFE: data.DateDepotPFE,
     };
     const res = await axios.post(
-      "http://localhost:5000/anneeUni/Create",
+      "http://localhost:5000/annee/Create",
       request
     );
     try {
