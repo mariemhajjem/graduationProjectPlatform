@@ -11,31 +11,19 @@ import routes from "./routesStudent";
 import DemoNavbar from "components/Navbars/DemoNavbar.js"; 
 var ps;
 
+import authProvider from '../layouts/authProvider'
+import NotAuthorized from "./NotAuthorized";
+
 function Student(props) {
   const location = useLocation();
   const [backgroundColor, setBackgroundColor] = React.useState("blue");
   const mainPanel = React.useRef();
-  React.useEffect(() => {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(mainPanel.current);
-      document.body.classList.toggle("perfect-scrollbar-on");
-    }
-    return function cleanup() {
-      if (navigator.platform.indexOf("Win") > -1) {
-        ps.destroy();
-        document.body.classList.toggle("perfect-scrollbar-on");
-      }
-    };
-  });
-  React.useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    mainPanel.current.scrollTop = 0;
-  }, [location]);
+  
   const handleColorClick = (color) => {
     setBackgroundColor(color);
   };
   return (
+    authProvider.checkAuth()!==null ? (
     <div className="wrapper">
       <Sidebar {...props} routes={routes} backgroundColor={backgroundColor} />
       <div className="main-panel" ref={mainPanel}>
@@ -52,11 +40,11 @@ function Student(props) {
             );
           })}
           
-          <Redirect from="/Student" to="/Student/home" />
+          <Redirect to="/student" to="/student/user-page" />
           <Redirect from="/" to="/" />
         </Switch>
       </div> 
-    </div>
+    </div>) : <NotAuthorized /> 
   );
 }
 

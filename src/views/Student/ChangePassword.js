@@ -43,38 +43,6 @@ export default function ChangePassword() {
           <PanelHeader size="sm" />
           <div className="content">
             <Row>
-              <Col md="8">
-                <Card>
-                  <CardHeader>
-                    <h5 className="title">Edit Password</h5>
-                  </CardHeader>
-                  <CardBody>
-                    <form  
-                    ref={form}
-                    onSubmit={updateUser}  >
-                     
-                            <label>Password</label>
-                            <Input
-                              placeholder="Password"
-                              type="password"
-                              name="oldpassword" 
-                              disabled
-                            />  
-                            <label>New password</label>
-                            <input 
-                            placeholder="type new password" type="text"
-                            name="password"
-                            defaultValue={password} />
-                           
-                         
-                       
-                      <button type="submit" variant="primary">
-                        Send
-                      </button>
-                    </form>
-                  </CardBody>
-                </Card>
-              </Col>
               <Col md="4">
                 <Card className="card-user">
                   <div className="image">
@@ -90,13 +58,41 @@ export default function ChangePassword() {
                         className="avatar border-gray"
                         src={require("assets/img/mike.jpg").default}
                       />
-                      <h5 className="title">{decoded.prenom} </h5>
-
-                      <h5 className="title">{decoded.nom} </h5>
+                      <h5 className="title">
+                        {decoded.prenom} {decoded.nom}
+                      </h5>
                     </div>
                     <p className="description text-center">
-                    {decoded.email} <br />
+                      {decoded.email} <br />
                     </p>
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col md="4">
+                <Card>
+                  <CardHeader>
+                    <h5 className="title">Edit Password</h5>
+                  </CardHeader>
+                  <CardBody>
+                    <Form ref={form} onSubmit={updateUser}>
+                      <label>Password</label>
+                      <Input
+                        placeholder="Password"
+                        type="password"
+                        name="oldpassword"
+                        disabled
+                      />
+                      <label>New password</label>
+                      <Input
+                        placeholder="type new password"
+                        type="text"
+                        name="password"
+                        defaultValue={password}
+                      />
+                      <Button type="submit" variant="primary">
+                        Send
+                      </Button>
+                    </Form>
                   </CardBody>
                 </Card>
               </Col>

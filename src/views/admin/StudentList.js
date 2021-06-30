@@ -1,8 +1,9 @@
 import {React,useState,useEffect} from "react";
-import { Link} from 'react-router-dom';
+import { Link,Route} from 'react-router-dom';
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import { loadStudentDetail } from '../../services/StudentService' 
 import axios from "axios";
+import  EditStudent  from './EditStudent';
 
 function StudentList() {
   const [search, setSearch] = useState("");
@@ -65,7 +66,19 @@ function StudentList() {
         alert("Error in the Code");
       });
   };
-
+  
+  const banRecord = async (id) => {
+    let student
+    student = { banned: true}
+    console.log(id)
+    await axios.put(`http://localhost:5000/login/baaan/${id}`,student)
+      .then((result) => {
+        loadStudentDetail();
+      })
+      .catch(() => {
+        alert("Error in the Code");
+      });
+  }
   return (
     <section>
       <PanelHeader size="sm" />
@@ -161,6 +174,7 @@ function StudentList() {
                   <th>Prenom</th>
                   <th>Email</th>
                   <th>cin</th>
+                  <th>Ban</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -171,7 +185,38 @@ function StudentList() {
                     <td> {item.prenom}</td>
                     <td> {item.email}</td>
                     <td> {item.cin}</td>
+                    <td>  <a
+                        className="text-danger mr-2"
+                        onClick={() => {
+                          const confirmBox = window.confirm(
+                            "Do you really want to ban " + item.prenom
+                          );
+                          if (confirmBox === true) {
+                            banRecord(item._id);
+                          }
+                        }}
+                      > 
+                        <i
+                          class="fa fa-ban"
+                          style={{ fontSize: "18px", marginRight: "5px" }}
+                        ></i>{" "}
+                      </a>  
+                      </td>
                     <td>
+                       {/*  <a onClick={(() => {
+                           <Route path={`/EditStudent/editID/${item._id}`} component={EditStudent} /> 
+                        })()}> <i class="fa fa-edit" aria-hidden="true"></i> 
+                      
+                      </a> */}
+                      <Link class=" mr-2" to={`/StudentDetails/${item._id}`}>
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                      </Link>
+                      <Link
+                        class=" mr-2"
+                        to={`/EditStudent/editID/${item._id}`}
+                      >
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </Link>
                       <a
                         className="text-danger mr-2"
                         onClick={() => {
@@ -182,23 +227,13 @@ function StudentList() {
                             deleteRecord(item._id);
                           }
                         }}
-                      >
-                        {" "}
+                      > 
                         <i
                           class="far fa-trash-alt"
                           style={{ fontSize: "18px", marginRight: "5px" }}
                         ></i>{" "}
                       </a>
-
-                      <Link
-                        class=" mr-2"
-                        to={`/EditStudent/editID/${item._id}`}
-                      >
-                        <i class="fa fa-edit" aria-hidden="true"></i>
-                      </Link>
-                      <Link class=" mr-2" to={`/StudentDetails/${item._id}`}>
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                      </Link>
+                      
                     </td>
                   </tr>
                 ))}

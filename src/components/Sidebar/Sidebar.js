@@ -7,8 +7,16 @@ import logo from "logo-white.svg";
 var ps;
 
 function Sidebar(props) {
-  const token = localStorage.getItem('token');
-  const decoded=jwt(token);
+  const getToken = () =>{
+    const token = localStorage.getItem('token');
+    if(token) {
+      const decoded=jwt(token);
+      return decoded 
+    }
+    else
+      return null;
+  } 
+  
   const sidebar = React.useRef();
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
@@ -28,7 +36,7 @@ function Sidebar(props) {
     };
   });
   return (
-    <div className="sidebar" data-color={props.backgroundColor}>
+     <div className="sidebar" data-color={props.backgroundColor}>
       <div className="logo">
         <a 
           className="simple-text logo-mini"
@@ -42,7 +50,7 @@ function Sidebar(props) {
           className="simple-text logo-normal"
           target="_blank"
         >
-          {decoded.prenom} {decoded.nom} 
+          {getToken() ? <>{getToken().prenom} {getToken().nom }</>: ""}
         </a>
       </div>
       <div className="sidebar-wrapper" ref={sidebar}>
@@ -70,7 +78,7 @@ function Sidebar(props) {
           })}
         </Nav>
       </div>
-    </div>
+    </div> 
   );
 }
 

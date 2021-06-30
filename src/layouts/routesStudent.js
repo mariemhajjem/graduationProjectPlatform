@@ -8,14 +8,14 @@ var dashRoutes = [
     name: "User Profile",
     icon: "users_single-02",
     component: ChangePassword,
-    layout: "/Student",
+    layout: "/student",
   }, 
   {
     path: "/GraduationProjects",
     name: "Graduation Projects",
     icon: "education_hat",
     component: GraduationProject,
-    layout: "/Student",
+    layout: "/student",
   },  
 ];
 export default dashRoutes;

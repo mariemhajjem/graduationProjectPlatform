@@ -1,36 +1,46 @@
 import { React, useState, useEffect } from "react";
 import axios from "axios";
-import PanelHeader from "components/PanelHeader/PanelHeader.js"; 
-import { Container,Row,Col,Modal, Button, Form } from "react-bootstrap";
-import "./AcademicYear.css"; 
+import PanelHeader from "components/PanelHeader/PanelHeader.js";
+import { Container, Row, Col, Modal, Button, Form } from "react-bootstrap";
+import "./AcademicYear.css";
+/* import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
+import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
+import DateRangePicker from "@material-ui/lab/DateRangePicker";
+import Box from "@material-ui/core/Box"; */
 
 function AcademicYear() {
   const [data, setData] = useState({
     nom: "",
     DateDepotPFE: "",
-  }); 
+  });
   const [record, setRecord] = useState([]);
   const [show, setShow] = useState(false);
   const [details, setDetails] = useState(false);
-  const handleClose = () => {setShow(false);setDetails(false)}
+  const handleClose = () => {
+    setShow(false);
+    setDetails(false);
+  };
   const handleShow = () => setShow(true);
-  const [updatedYear, setUpdatedYear] = useState ('');
-  const [updateLimitDate, setUpdateLimitDate] = useState ('');
-  const [updatedYearId, setUpdatedYearId] = useState ('');
-  
-  const showUpdate = (id,Annee,DateDepotPFE) => {  
-    setUpdatedYear(Annee) 
-    setUpdateLimitDate(DateDepotPFE)
-    setUpdatedYearId(id)
-    handleShow() 
-  } 
-  const showYear = (Annee,DateDepotPFE) => {  
-    setUpdatedYear(Annee) 
-    setUpdateLimitDate(DateDepotPFE) 
-    handleShow() 
-    setDetails(true)
-  }
-  
+  const [updatedYear, setUpdatedYear] = useState("");
+  const [updateLimitDate, setUpdateLimitDate] = useState("");
+  const [updatedYearId, setUpdatedYearId] = useState("");
+  const [value, setValue] = useState([null, null]);
+
+  const showUpdate = (id, Annee, DateDepotPFE) => {
+    setUpdatedYear(Annee);
+    setUpdateLimitDate(DateDepotPFE);
+    setUpdatedYearId(id);
+    handleShow();
+  };
+  const showYear = (Annee, DateDepotPFE) => {
+    setUpdatedYear(Annee);
+    setUpdateLimitDate(DateDepotPFE);
+    handleShow();
+    setDetails(true);
+  };
+
   const loadYears = async () => {
     var response = fetch("http://localhost:5000/annee/List")
       .then(function (response) {
@@ -40,11 +50,11 @@ function AcademicYear() {
         setRecord(myJson);
       });
   };
-  const updateYear = async e => {
-    let form = document.getElementById ('formUpdate');
-    let formData = new FormData (form);
-    formData.append("updatedYear",updatedYear) 
-    formData.append("updateLimitDate",updateLimitDate) 
+  const updateYear = async (e) => {
+    let form = document.getElementById("formUpdate");
+    let formData = new FormData(form);
+    formData.append("updatedYear", updatedYear);
+    formData.append("updateLimitDate", updateLimitDate);
     e.preventDefault();
     try {
       await axios.put(
@@ -56,7 +66,7 @@ function AcademicYear() {
         alert(res.data.error);
       }
       loadYears();
-      handleClose()   
+      handleClose();
     } catch (err) {
       console.log(err);
       alert("erreur");
@@ -64,11 +74,11 @@ function AcademicYear() {
   };
   function handleUpdatedYear(e) {
     setUpdatedYear(e.target.value);
-    console.log(updatedYear)
+    console.log(updatedYear);
   }
   function handleUpdateLimitDate(e) {
     setUpdateLimitDate(e.target.value);
-    console.log(updateLimitDate)
+    console.log(updateLimitDate);
   }
   useEffect(() => {
     loadYears();
@@ -89,7 +99,10 @@ function AcademicYear() {
   function handle(e) {
     const newdata = { ...data };
     newdata[e.target.id] = e.target.value;
-    setData(newdata); 
+    setData(newdata);
+  }
+  function handleSelect(e) {
+    console.log(e.target?.value);
   }
   function clearData(e) {
     e.preventDefault();
@@ -110,7 +123,7 @@ function AcademicYear() {
         setError(res.data.error);
       } else {
         loadYears();
-        clearData(e); 
+        clearData(e);
       }
     } catch (err) {
       setError("bad request");
@@ -142,6 +155,26 @@ function AcademicYear() {
               placeholder="Academic year"
             ></input>
             <br />
+            {/* <p> Exams Period</p>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Box>
+                <Typography sx={{ mt: 2, mb: 1 }}>1 calendar </Typography>
+                <DateRangePicker
+                  calendars={1}
+                  value={value}
+                  onChange={(newValue) => {
+                    setValue(newValue);
+                  }}
+                  renderInput={(startProps, endProps) => (
+                    <React.Fragment>
+                      <TextField {...startProps} />
+                      <Box sx={{ mx: 2 }}> to </Box>
+                      <TextField {...endProps} />
+                    </React.Fragment>
+                  )}
+                />
+              </Box>
+            </LocalizationProvider> */}
             <p> Limit date</p>
             <input
               type="date"
@@ -158,7 +191,11 @@ function AcademicYear() {
                 Ajouter
               </button>
               &nbsp;&nbsp;&nbsp;
-              <button type="reset" className="btn btn-warning " onClick={clearData}>
+              <button
+                type="reset"
+                className="btn btn-warning "
+                onClick={clearData}
+              >
                 Annuler
               </button>
             </div>
@@ -184,9 +221,9 @@ function AcademicYear() {
             className="text-center  ml-4 mt-4  mb-5"
             style={{ fontFamily: "bold" }}
           >
+            {" "}
             List Academic Year{" "}
           </h3>
-
           <table className="table table-hover  table-striped table-bordered ml-4 ">
             <thead>
               <tr>
@@ -204,7 +241,12 @@ function AcademicYear() {
                       {item.Annee}
                     </a>
                   </td>
-                  <td> {item.DateDepotPFE ? item.DateDepotPFE.slice(0, 10): "----" }</td>
+                  <td>
+                    {" "}
+                    {item.DateDepotPFE
+                      ? item.DateDepotPFE.slice(0, 10)
+                      : "----"}
+                  </td>
                   <td>
                     {/* <span
                       style={{ fontSize: "18px" }}
@@ -245,13 +287,18 @@ function AcademicYear() {
             <Modal.Body>
               <Container fluid>
                 <Row className="justify-content-md-center">
-                  <Col><h5>Year :  {updatedYear}</h5></Col>
+                  <Col>
+                    <h5>Year : {updatedYear}</h5>
+                  </Col>
                 </Row>
                 <Row className="justify-content-md-center">
-                  <Col><h5>The limit date of deposit :  {updateLimitDate.slice(0, 10)}</h5></Col>
+                  <Col>
+                    <h5>
+                      The limit date of deposit : {updateLimitDate.slice(0, 10)}
+                    </h5>
+                  </Col>
                 </Row>
                 <br />
-                   
               </Container>
             </Modal.Body>
           </>
@@ -261,10 +308,7 @@ function AcademicYear() {
               <Modal.Title>Update Year</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form
-                onSubmit={(e) => updateYear(e)} 
-                id="formUpdate"
-              >
+              <Form onSubmit={(e) => updateYear(e)} id="formUpdate">
                 <div className="col">
                   <Form.Control
                     size="lg"
@@ -275,7 +319,7 @@ function AcademicYear() {
                     placeholder="Year"
                     name="updatedYear"
                     defaultValue={updatedYear}
-                    onChange={(e) =>handleUpdatedYear(e)}
+                    onChange={(e) => handleUpdatedYear(e)}
                   />
                   <br />
                   <Form.Control

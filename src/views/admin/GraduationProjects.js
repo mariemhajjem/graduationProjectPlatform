@@ -4,7 +4,7 @@ import axios from "axios";
 
 function GraduationProjects() {
   const [search, setSearch] = useState("");
-    const [record, setRecord] = useState([]);
+  const [record, setRecord] = useState([]);
 
   // On Page load display all records
     const loadProjects = async () => {
@@ -14,6 +14,7 @@ function GraduationProjects() {
         })
         .then(function (myJson) {
           setRecord(myJson);
+          console.log(myJson)
         });
     };
     useEffect(() => {
@@ -39,6 +40,12 @@ function GraduationProjects() {
           setRecord(response.data);
         });
     };
+    const showYear = (Annee, DateDepotPFE) => {
+      setUpdatedYear(Annee);
+      setUpdateLimitDate(DateDepotPFE);
+      handleShow();
+      setDetails(true);
+    };
     return (
       <>
         <PanelHeader size="sm" />
@@ -56,10 +63,14 @@ function GraduationProjects() {
             <tbody>
               {record.map((item) => (
                 <tr>
-                  <td> {item.title}</td>  
+                  <td>
+                    {" "}
+                    <a onClick={() => showYear(item.Annee, item.DateDepotPFE)}>
+                    {item.title}
+                    </a>
+                  </td>  
                   <td> {item.userId}</td> 
                   <td> {item.enseignantId}</td>
-                   
                 </tr>
               ))}
             </tbody>

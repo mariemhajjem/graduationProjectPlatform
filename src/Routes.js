@@ -8,7 +8,7 @@ import  EditStudent  from './views/admin/EditStudent';
 import  StudentDetails  from './views/admin/StudentDetails';
 import  EditProfessor  from './views/admin/EditProfessor';
 import  ProfessorDetails  from './views/admin/ProfessorDetails';
-
+import NotAuthorized from 'layouts/NotAuthorized';
 export const Routes = () => (
   <BrowserRouter>
     <Switch>
@@ -35,6 +35,9 @@ export const Routes = () => (
       </Route>
       <Route exact path="/ProfessorDetails/:id">
         <ProfessorDetails />
+      </Route>
+      <Route exact path="/Not-authorized">
+        <NotAuthorized />
       </Route>
     </Switch>
   </BrowserRouter>

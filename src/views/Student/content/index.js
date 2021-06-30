@@ -11,7 +11,7 @@ export default function Content() {
   return (
     <Switch>
       <Route path="/" render={(props) => <StudentLayout {...props} />} />
-      <Redirect to="/dashboard" />
+      <Redirect to="/" />
     </Switch>
   );
 }

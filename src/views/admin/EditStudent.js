@@ -55,73 +55,77 @@ const EditStudent = () => {
   };
  
   return (
+    <>
     <div className="container">
-        <div className="row mt-4"> 
-        <div className="col-sm-5 col-offset-3 mx-auto shadow p-5">
-        <h4 className="text-center mb-4">Edit A Student</h4>
-        
-          <h4 className="text-success">Student ID : {id} </h4>
-          </div>
-          </div>
-     <div className="row mt-6"> 
+      <div className="row mt-10">
+          <h4 className="text-center mb-10">Edit A Student</h4>
+      </div>
       
-          <div>
-          <div className="form-group mb-3" >
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Enter Product Name"
-              name="nom"
-              value={nom}
-              onChange={e => onInputChange(e)}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Enter Product Price"
-              name="prenom"
-              value={prenom}
-              onChange={e => onInputChange(e)}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Enter Product Description"
-              name="email"
-              value={email}
-              onChange={e => onInputChange(e)}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Enter Product Description"
-              name="cin"
-              value={cin}
-              onChange={e => onInputChange(e)}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Enter Product Description"
-              name="password"
-              value={password}
-              onChange={e => onInputChange(e)}
-            />
-          </div>
-          
-          <button onClick={updateStudent} className="btn btn-secondary btn-block">Update Student</button>
-          </div>
-       </div>
-      </div> 
-     
+    </div>
+    <div className="container">
+    <div className="row mt-12">
+    <div>
+      <div className="form-group mb-12">
+        <input
+          type="text"
+          className="form-control form-control-lg"
+          placeholder="Enter Product Name"
+          name="nom"
+          value={nom}
+          onChange={(e) => onInputChange(e)}
+        />
+      </div>
+      <div className="form-group mb-6">
+        <input
+          type="text"
+          className="form-control form-control-lg"
+          placeholder="Enter Product Price"
+          name="prenom"
+          value={prenom}
+          onChange={(e) => onInputChange(e)}
+        />
+      </div>
+      <div className="form-group mb-6">
+        <input
+          type="text"
+          className="form-control form-control-lg"
+          placeholder="Enter Product Description"
+          name="email"
+          value={email}
+          onChange={(e) => onInputChange(e)}
+        />
+      </div>
+      <div className="form-group mb-6">
+        <input
+          type="text"
+          className="form-control form-control-lg"
+          placeholder="Enter Product Description"
+          name="cin"
+          value={cin}
+          onChange={(e) => onInputChange(e)}
+        />
+      </div>
+      <div className="form-group mb-6">
+        <input
+          type="text"
+          className="form-control form-control-lg"
+          placeholder="Enter Product Description"
+          name="password"
+          value={password}
+          onChange={(e) => onInputChange(e)}
+        />
+      </div>
+
+      <button
+        onClick={updateStudent}
+        className="btn btn-secondary btn-block"
+      >
+        Update Student
+      </button>
+    </div>
+  </div>
+  </div>
+  </>
   );
 };
  

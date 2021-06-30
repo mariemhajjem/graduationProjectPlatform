@@ -104,7 +104,10 @@ export default function GraduationProject(props) {
             axios.post(`http://localhost:5000/pfe/Create/`, formData, {
               headers: { Authorization: `Bearer ${token}` },
             }).then((response,err) =>
-               console.log(response)
+               console.log(response),
+               setFileTitle(""),
+               setUploadedFile(""),
+               fetchpfe()
               ).catch(err=>{
                 if(err.status!==200) { 
                 alert("There was a problem adding the project to the database.")

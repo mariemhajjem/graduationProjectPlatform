@@ -1,47 +1,33 @@
-import React from "react";
-// javascript plugin used to create scrollbars on windows
-import PerfectScrollbar from "perfect-scrollbar";
-
-// reactstrap components
+import React from "react"; 
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
-
-// core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js"; 
 import Sidebar from "components/Sidebar/Sidebar.js";  
 import routes from "./routes";
-
-var ps;
+import jwt from "jwt-decode" 
+import authProvider from '../layouts/authProvider'
+import NotAuthorized from "./NotAuthorized";
 
 function Admin(props) {
   const location = useLocation();
   const [backgroundColor, setBackgroundColor] = React.useState("blue");
   const mainPanel = React.useRef();
-  React.useEffect(() => {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(mainPanel.current);
-      document.body.classList.toggle("perfect-scrollbar-on");
+  const getDecodedToken = () =>{
+    const token = localStorage.getItem('token');
+    if(token) {
+      const decoded=jwt(token);
+      return decoded 
     }
-    return function cleanup() {
-      if (navigator.platform.indexOf("Win") > -1) {
-        ps.destroy();
-        document.body.classList.toggle("perfect-scrollbar-on");
-      }
-    };
-  });
-  React.useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    mainPanel.current.scrollTop = 0;
-  }, [location]);
-  const handleColorClick = (color) => {
-    setBackgroundColor(color);
+    else
+      return null;
   };
-  return (
+  console.log(authProvider.checkAuth());
+  
+  return authProvider.checkAuth()!==null ? (
     <div className="wrapper">
       <Sidebar {...props} routes={routes} backgroundColor={backgroundColor} />
       <div className="main-panel" ref={mainPanel}>
         <DemoNavbar {...props} />
-        
+
         <Switch>
           {routes.map((prop, key) => {
             return (
@@ -52,13 +38,14 @@ function Admin(props) {
               />
             );
           })}
-          <Redirect from="/" to="/" />
+          {/* 
           <Redirect from="/admin" to="/admin/dashboard" />
-          
+          <Redirect from="/" to="/" /> */}
         </Switch>
-      </div> 
+      </div>
     </div>
-  );
+  ) : <NotAuthorized /> 
+    
 }
 
 export default Admin;
