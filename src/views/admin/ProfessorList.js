@@ -237,6 +237,15 @@ function ProfessorList() {
                     <td> {item.email}</td>
                     <td> {item.cin}</td>
                     <td >
+                    <Link class=" mr-2" to={`/ProfessorDetails/${item._id}`}>
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                      </Link>
+                      <Link
+                        class=" mr-2"
+                        to={`/EditProfessor/editID/${item._id}`}
+                      >
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </Link>
                       <a
                         className="text-danger mr-2"
                         onClick={() => {
@@ -253,16 +262,6 @@ function ProfessorList() {
                           style={{ fontSize: "18px", marginRight: "5px" }}
                         ></i> 
                       </a>
-
-                      <Link
-                        class=" mr-2"
-                        to={`/EditProfessor/editID/${item._id}`}
-                      >
-                        <i class="fa fa-edit" aria-hidden="true"></i>
-                      </Link>
-                      <Link class=" mr-2" to={`/ProfessorDetails/${item._id}`}>
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                      </Link>
                     </td>
                   </tr>
                 ))}

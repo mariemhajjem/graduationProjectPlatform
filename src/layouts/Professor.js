@@ -39,8 +39,8 @@ function Professor(props) {
             );
           })}
           
-          <Redirect from="/professor" to="/professor/dashboard" />
-          <Redirect from="/" to="/" />
+          <Redirect from="/professor" to="/professor/user-page" />
+          <Redirect to="/" />
         </Switch>
       </div> 
     </div>) : <NotAuthorized /> 

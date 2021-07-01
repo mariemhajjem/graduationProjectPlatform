@@ -11,18 +11,19 @@ import DateRangePicker from "@material-ui/lab/DateRangePicker";
 import Box from "@material-ui/core/Box"; */
 
 function AcademicYear() {
+  
   const [data, setData] = useState({
     nom: "",
     DateDepotPFE: "",
   });
   const [record, setRecord] = useState([]);
   const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
   const [details, setDetails] = useState(false);
   const handleClose = () => {
     setShow(false);
     setDetails(false);
   };
-  const handleShow = () => setShow(true);
   const [updatedYear, setUpdatedYear] = useState("");
   const [updateLimitDate, setUpdateLimitDate] = useState("");
   const [updatedYearId, setUpdatedYearId] = useState("");
@@ -119,6 +120,7 @@ function AcademicYear() {
     };
     const res = await axios.post("http://localhost:5000/annee/Create", request);
     try {
+      
       if (res.data.type === "error") {
         setError(res.data.error);
       } else {

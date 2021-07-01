@@ -25,11 +25,12 @@ export default function ChangePassword() {
         e.preventDefault(); 
         const formData = new FormData (form.current); 
         //formData.append("password",password)
-        try {
-          await axios.post(
+        await axios.post(
             `http://localhost:5000/utilisateur/reset/${token}`,
             formData
           );
+        try {
+          
           if (res.data.type === "error") {
             alert(res.data.error);
           }

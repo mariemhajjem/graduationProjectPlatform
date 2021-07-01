@@ -118,7 +118,6 @@ function DemoNavbar(props) {
              
             <NavItem>
               <Link to="" className="nav-link" onClick={handleClick}>
-                 
                 <p> Sign out  </p>
               </Link>
             </NavItem>

@@ -10,7 +10,7 @@ export default function Content() {
     return (
         <Switch>
         <Route path="/" render={(props) => <ProfessorLayout {...props} />} />
-        <Redirect to="/dashboard" />
+        <Redirect to="/" />
       </Switch>
     )
 }

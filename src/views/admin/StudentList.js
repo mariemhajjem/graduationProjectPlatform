@@ -185,7 +185,8 @@ function StudentList() {
                     <td> {item.prenom}</td>
                     <td> {item.email}</td>
                     <td> {item.cin}</td>
-                    <td>  <a
+                    <td>  
+                      <a
                         className="text-danger mr-2"
                         onClick={() => {
                           const confirmBox = window.confirm(

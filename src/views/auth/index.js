@@ -67,7 +67,7 @@ export default function Login() {
   const submitStudentRecord = async (e) => {
      e.preventDefault();
     const res = await axios.post("http://localhost:5000/login/login", student); 
-    console.log(res.status)
+     
             if (res.status !== 200) {
                 setError("Erreur")
                 alert(error)

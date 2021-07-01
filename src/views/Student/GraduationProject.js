@@ -6,6 +6,7 @@ import * as AiIcons from "react-icons/ai"
 import axios from "axios"
 import jwt from 'jwt-decode' 
 import "./GraduationProject.css" 
+
 export default function GraduationProject(props) {
     const location = useLocation()
     const token = localStorage.getItem('token');
@@ -35,6 +36,7 @@ export default function GraduationProject(props) {
       let year = newDate.getFullYear();
       return `${year}`;
     }
+    
     const fetchYear = async () => { 
       const year = getCurrentYear() 
       const res = await axios.get(`http://localhost:5000/annee/GetOne/${year.toString()}`)
