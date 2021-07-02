@@ -177,7 +177,7 @@ function AcademicYear() {
                 />
               </Box>
             </LocalizationProvider> */}
-            <p> Limit date</p>
+            <p> Limit date of graduation project deposit</p>
             <input
               type="date"
               value={data.DateDepotPFE}
@@ -230,7 +230,7 @@ function AcademicYear() {
             <thead>
               <tr>
                 <th>Year</th>
-                <th>Limit Date</th>
+                <th>Limit Date of deposit</th>
                 <th>Action</th>
               </tr>
             </thead>

@@ -2,13 +2,10 @@ import axios from 'axios'
 
 
 let baseUrl = "http://localhost:5000/users" ;
-let baseUrlPfe =  "http://localhost:5000/users"
+let baseUrlPfe =  "http://localhost:5000/pfe"
 
 export async function getAllUser(){
-
-
-
-  try{
+ try{
 
     var resp = await axios.get(baseUrl + "/etudiants");
     return await resp.data;

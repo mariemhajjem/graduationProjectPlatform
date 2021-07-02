@@ -24,12 +24,12 @@ export default function ListGraduationProject() {
     
    
     const AcceptProject = async (id) => { 
-      await axios.put("http://localhost:5000/utilisateur/"); 
+      await axios.post(`http://localhost:5000/pfe/accept/${id}`); 
       loadProjects();
     };
     const DeclineProject = async (id) => { 
 
-      await axios.put("http://localhost:5000/utilisateur/"); 
+      await axios.post(`http://localhost:5000/pfe/decline/${id}`); 
       loadProjects();
     };
     // Search Records here
@@ -79,13 +79,14 @@ export default function ListGraduationProject() {
               </tr>
             </thead>
             <tbody>
-              {record ? record.map((item) => (
-                <tr>
+              {record ? record.map((item,key) => (
+                <tr key={key}>
                   <td> {item.title}</td>  
                   <td> {item.userId[0].prenom} {item.userId[0].nom} </td> 
                   <td>
+                    {item.confirmed==-1 ?
                     <a
-                      className="text-danger mr-2"
+                      className="mr-2"
                       onClick={() => {
                         const confirmBox = window.confirm(
                           "Do you really want to accept " + item.title
@@ -100,10 +101,10 @@ export default function ListGraduationProject() {
                         class="fa fa-check-circle"
                         style={{ fontSize: "18px", marginRight: "5px" }}
                       ></i>{" "}
-                    </a>
+                    </a>: item.confirmed==0 ? "Declined":"Already accepted"}
                   </td>
                   <td>
-                    <a
+                    {item.confirmed==-1 ?<a
                       className="text-danger mr-2"
                       onClick={() => {
                         const confirmBox = window.confirm(
@@ -119,7 +120,7 @@ export default function ListGraduationProject() {
                         class="fa fa-window-close"
                         style={{ fontSize: "18px", marginRight: "5px" }}
                       ></i>{" "}
-                    </a>
+                    </a>: item.confirmed==0 ? "Declined":"Already Accepted"}
                   </td>
                 </tr>
               )):"No data found"}
