@@ -23,51 +23,48 @@ const EditStudent = () => {
     email: "",
     cin: "",
     password: ""
-  });
-  
-    //  Object Destructuring 
-    const { nom, prenom, email, cin, password} = student;
- 
-  const onInputChange = e => {
-    setStudent({ ...student,[e.target.name]: e.target.value });
-  };
- 
+  }); 
+  const [record, setRecord] = useState([]);
+   
   useEffect(() => {
     loadUser();
   }, []);
- 
-   
   const updateStudent = async e => {
-    e.preventDefault();
-    //await axios.put(`http://localhost:5000/utilisateur/${id}`, student);
+    e.preventDefault(); 
     history.push("/admin/StudentList");
   };
  
-  const loadUser =  () => {
-    fetch(`http://localhost:5000/utilisateur/id/${id}`,{
-            method: "GET",
-          })
-            .then((response) => response.json())
-            .then((result) => {
-                console.log(result);
+  const loadProf = async () => {
+    await fetch(`http://localhost:5000/utilisateur/user/${id}`)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
         setStudent({
-                    id: id,
-                    update: true,
-                    nom: result.nom,
-                    prenom: result.prenom,
-                    email: result.email,
-                    cin: result.cin,
-                    password: result.password,
- 
-                });
-            })
-            .catch((error) => console.log("error", error));
+          id: id, 
+          nom: result.nom,
+          prenom: result.prenom,
+          email: result.email,
+          cin: result.cin,
+        });
+      })
+      .catch((error) => console.log("error", error));
   };
- 
+  const loadUser =  async() => {
+    var response = await fetch(`http://localhost:5000/utilisateur/id/${id}`) 
+          .then((res) => {
+            return res.json();
+          }) 
+          .catch((error) => console.log("error", error));
+          console.log(response);
+          setRecord(response);
+  };
+  useEffect(() => {
+    loadUser();
+    loadProf();
+  }, []);
+
   return (
     <div className="container">
-      
-
       <Card className="card-user">
         <div className="image">
           <img alt="..." src={require("assets/img/bg5.jpg").default} />
@@ -79,20 +76,48 @@ const EditStudent = () => {
               className="avatar border-gray"
               src={require("assets/img/mike.jpg").default}
             />
-            <h4 className="text-center mb-4"> Student Details</h4>
-            <h5 className="title">{nom}</h5>
-            <h5 className="title">{prenom}</h5> 
+            <h4 className="text-center mb-4"> Professor Details</h4>
+             
+                <h5 className="title">
+                  {student.prenom} {student.nom}
+                </h5>
+                <p className="description text-center">
+                  {student.email}
+                  <br />
+                </p>
+               
           </div>
-          <p className="description text-center">
-          {email} <br />
-          </p>
-          <p className="description text-center">
-          {cin}<br />
-          </p>
-          <button onClick={updateStudent} className="btn btn-secondary btn-block">List Student</button>
+          <button
+            onClick={updateStudent}
+            className="btn btn-secondary btn-block"
+          >
+            List Professor
+          </button>
         </CardBody>
-        
       </Card>
+      <div className="col-sm-8">
+        <h5 className="text-center  ml-4 mt-4  mb-5">
+          List Graduation Projects
+        </h5>
+        <table className="table table-hover  table-striped table-bordered ml-4 ">
+          <thead>
+            <tr>
+              <th>Graduation project's title</th>
+              <th>Professor</th>
+              <th>Date of acceptance </th>
+            </tr>
+          </thead>
+          <tbody>
+            {record.map((item, key) => (
+              <tr key={key}>
+                <td> {item.title} </td>
+                <td> {item.enseignantId.prenom} {item.enseignantId.nom} </td>
+                <td> {item.confirmationDate.slice(0, 10)} </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>  
     </div>
   );
 };

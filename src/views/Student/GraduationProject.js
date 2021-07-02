@@ -141,7 +141,7 @@ export default function GraduationProject(props) {
           <h3 className="date">
             Date: {getCurrentDate()} <br />  {date.slice(0, 10)?  <>Limit Date : { date.slice(0, 10) } </>: ""} 
           </h3>
-          {getCurrentDate() < date ? (
+          {getCurrentDate() < date && !pfe ? (
             <>
               <Form
                 onSubmit={(e) => handleFormSubmittion(e)}
@@ -200,9 +200,11 @@ export default function GraduationProject(props) {
                 <br></br>
               </Form>{" "}
             </>
-          ) : (
+          ) : (<>
             <h3>Sorry, you can't deposit.</h3>
-          )}
+            <h5>Either you already deposit or you passed the date limit of graduation project deposit.</h5> 
+          </>)
+          }
 
           <br />
           <br />
@@ -220,7 +222,7 @@ export default function GraduationProject(props) {
               <tbody>
                 <tr>
                   <td> {pfe.title}</td>
-                  <td> {pfe.rapport}</td>
+                  <td> {pfe.rapport?.slice(30,)}</td>
                   <td>
                     {(() => {
                       if (pfe.confirmed == 1) {

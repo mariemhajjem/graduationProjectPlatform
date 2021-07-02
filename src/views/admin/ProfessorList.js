@@ -62,8 +62,7 @@ function ProfessorList() {
 
   // Search Records here
   const searchRecords = () => {
-     
-    axios
+      axios
       .get(`http://localhost:5000/utilisateur/prof/${search}`)
       .then((response) => {
         setRecord(response.data);

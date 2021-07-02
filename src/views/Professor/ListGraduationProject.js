@@ -32,16 +32,7 @@ export default function ListGraduationProject() {
       await axios.post(`http://localhost:5000/pfe/decline/${id}`); 
       loadProjects();
     };
-    // Search Records here
-    const searchRecords = () => {
-      alert(search);
-      axios
-        .get(`http://localhost:5000/utilisateur/${search}`)
-        .then((response) => {
-          setRecord(response.data);
-        });
-    };
-    
+     
     useEffect(() => {
       loadProjects();
     }, []);
@@ -50,30 +41,13 @@ export default function ListGraduationProject() {
         <PanelHeader size="sm" />
         <div class="col-sm-8">
           <h5 class="text-center  ml-4 mt-4  mb-5">List Graduation Projects</h5>
-          <div class="input-group mb-4 mt-3">
-            <div class="form-outline">
-              <input
-                type="text"
-                id="form1"
-                onChange={(e) => setSearch(e.target.value)}
-                class="form-control"
-                placeholder="Search Student Here"
-                style={{ backgroundColor: "#ececec" }}
-              />
-            </div>
-            <button
-              type="button"
-              onClick={searchRecords}
-              class="btn btn-success"
-            >
-              <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
-          </div>
+          
           <table class="table table-hover  table-striped table-bordered ml-4 ">
             <thead>
               <tr>
                 <th>Graduation project's title</th>
                 <th>Student</th> 
+                <th>State</th> 
                 <th>Accept</th>
                 <th>Decline</th>
               </tr>
@@ -83,6 +57,7 @@ export default function ListGraduationProject() {
                 <tr key={key}>
                   <td> {item.title}</td>  
                   <td> {item.userId[0].prenom} {item.userId[0].nom} </td> 
+                  <td> {item.confirmed==-1 ? "No response": item.confirmed==0 ? "Declined":"Accepted"} </td>
                   <td>
                     {item.confirmed==-1 ?
                     <a
@@ -101,7 +76,24 @@ export default function ListGraduationProject() {
                         class="fa fa-check-circle"
                         style={{ fontSize: "18px", marginRight: "5px" }}
                       ></i>{" "}
-                    </a>: item.confirmed==0 ? "Declined":"Already accepted"}
+                    </a>: item.confirmed==0 ?
+                    <a
+                    className="mr-2"
+                    onClick={() => {
+                      const confirmBox = window.confirm(
+                        "Do you really want to accept " + item.title
+                      );
+                      if (confirmBox === true) {
+                        AcceptProject(item._id);
+                      }
+                    }}
+                  >
+                    {" "}
+                    <i
+                      class="fa fa-check-circle"
+                      style={{ fontSize: "18px", marginRight: "5px" }}
+                    ></i>{" "}
+                  </a> :"Already accepted"}
                   </td>
                   <td>
                     {item.confirmed==-1 ?<a
@@ -120,7 +112,24 @@ export default function ListGraduationProject() {
                         class="fa fa-window-close"
                         style={{ fontSize: "18px", marginRight: "5px" }}
                       ></i>{" "}
-                    </a>: item.confirmed==0 ? "Declined":"Already Accepted"}
+                    </a>: item.confirmed==0 ? "Declined": 
+                    <a
+                    className="text-danger mr-2"
+                    onClick={() => {
+                      const confirmBox = window.confirm(
+                        "Do you really want to decline " + item.title
+                      );
+                      if (confirmBox === true) {
+                        DeclineProject(item._id);
+                      }
+                    }}
+                  >
+                    {" "}
+                    <i
+                      class="fa fa-window-close"
+                      style={{ fontSize: "18px", marginRight: "5px" }}
+                    ></i>{" "}
+                  </a>}
                   </td>
                 </tr>
               )):"No data found"}
